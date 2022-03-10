@@ -1,34 +1,37 @@
 // Search for Tweets within the past seven days
 // https://developer.twitter.com/en/docs/twitter-api/tweets/search/quick-start/recent-search
 
-const needle = require("needle");
+const needle = require('needle');
 
 // The code below sets the bearer token from your environment variables
 // To set environment variables on macOS or Linux, run the export command below from the terminal:
 // export BEARER_TOKEN='YOUR-TOKEN'
 const token = process.env.BEARER_TOKEN;
 
-const endpointUrl = "https://api.twitter.com/2/tweets/counts/recent";
+const endpointUrl = "https://api.twitter.com/2/tweets/search/recent";
 
 async function getRequest() {
-    // Edit query parameters below and specify a search query
-    // optional params: start_time,end_time,since_id,until_id,next_token,granularity
-    const params = {
-        query: "from:nft11_official",
-        granularity: "day",
-    };
 
-    const res = await needle("get", endpointUrl, params, {
+    // Edit query parameters below
+    // specify a search query, and any additional fields that are required
+    // by default, only the Tweet ID and text fields are returned
+    const params = {
+        'query': 'from:nft11_official -is:retweet',
+        'tweet.fields': 'created_at,public_metrics',
+        expansions: "attachments.media_keys,attachments.poll_ids",
+    }
+
+    const res = await needle('get', endpointUrl, params, {
         headers: {
-            "User-Agent": "v2RecentTweetCountsJS",
-            authorization: `Bearer ${token}`,
-        },
-    });
+            "User-Agent": "v2RecentSearchJS",
+            "authorization": `Bearer ${token}`
+        }
+    })
 
     if (res.body) {
         return res.body;
     } else {
-        throw new Error("Unsuccessful request");
+        throw new Error('Unsuccessful request');
     }
 }
 

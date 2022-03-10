@@ -11,7 +11,7 @@ const exportExcel = (data) => {
         "QUOTE_COUNT",
         "DATE_OF_TWEET",
     ];
-    const filePath = "./outputFiles/nft11-data.xlsx";
+    const filePath = `./outputFiles/nft11-data.xlsx`;
     const workSheetName = "Tweets";
 
     const workBook = xlsx.utils.book_new();
@@ -19,6 +19,7 @@ const exportExcel = (data) => {
     const workSheet = xlsx.utils.aoa_to_sheet(workSheetData);
     xlsx.utils.book_append_sheet(workBook, workSheet, workSheetName);
     xlsx.writeFile(workBook, path.resolve(filePath));
+    xlsx.write
 };
 const exportUsersToExcel = (
     tweets,
