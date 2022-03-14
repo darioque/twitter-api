@@ -2,7 +2,6 @@
 // https://developer.twitter.com/en/docs/twitter-api/tweets/search/quick-start/recent-search
 
 const needle = require('needle');
-
 // The code below sets the bearer token from your environment variables
 // To set environment variables on macOS or Linux, run the export command below from the terminal:
 // export BEARER_TOKEN='YOUR-TOKEN'
@@ -18,6 +17,7 @@ async function getRequest() {
     const params = {
         'query': 'from:nft11_official -is:retweet',
         'tweet.fields': 'created_at,public_metrics',
+        'user.fields': 'public_metrics',
         expansions: "attachments.media_keys,attachments.poll_ids",
     }
 
@@ -39,9 +39,15 @@ async function getRequest() {
     try {
         // Make request
         const response = await getRequest();
-        console.dir(response, {
-            depth: null,
-        });
+		let interactions = 0
+		let impressions = 0
+		let link_clicks = 0
+		response.data.forEach((tweet) => {
+            console.log(tweet.id);
+			interactions += tweet.public_metrics.reply_count + tweet.public_metrics.retweet_count + tweet.public_metrics.like_count + tweet.public_metrics.quote_count
+		})
+		console.log(`interacciones ${interactions}, impresiones ${impressions}, click en links ${link_clicks}`);
+        // exportUsersToExcel(response.data)
     } catch (e) {
         console.log(e);
         process.exit(-1);

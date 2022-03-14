@@ -10,16 +10,16 @@ const needle = require('needle');
 // export BEARER_TOKEN='YOUR-TOKEN'
 const token = process.env.BEARER_TOKEN;
 
-const endpointURL = "https://api.twitter.com/2/users";
 
 async function getRequest() {
+    const endpointURL = "https://api.twitter.com/2/users";
 
     // These are the parameters for the API request
     // specify User names to fetch, and any additional fields that are required
     // by default, only the User ID, name and user name are returned
     const params = {
         ids: "1402218366648012806", // Edit usernames to look up
-        "user.fields": "created_at,description,public_metrics", // Edit optional query parameters here
+        "user.fields": "public_metrics", // Edit optional query parameters here
     };
 
     // this is the HTTP header that adds bearer token authentication
